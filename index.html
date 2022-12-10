@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
+<div class="nav-container">
   <nav class="navbar">
     <svg class="nav-logo" sxmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.92 56.48">
       <title>Academlo Logo</title>
@@ -35,6 +36,7 @@
       <i class='bx bx-grid-alt bx-sm ' id="menu-btn"></i>
     </div>
   </nav>
+</div>
   
   
     <!--========== Logo Academlo con contorno ==========-->
@@ -62,14 +64,28 @@
       <div class="cart" id="cart">
         <div class="nav-close" id="close-cart">
           <i class='bx bx-x bx-md'></i>
-        </div id="items-container">
+        </div>
+        <div class="cart-cards-container">
+          <h2 class="cart-title">
+            My Cart
+          </h2>
+          <div id="cart-items-container">
+            <img src="./assets/images/empty-cart.png" alt="" class="empty-cart">
+            <h2 class="empty-title">Your cart is empty</h2>
+            <p class="empty-p">
+              You can add items to your cart by clicking on the "+" button on the product page.
+            </p>
+            <!--
+            Contenido del carrito
 
-
-
-        <!--
-          Contenido del carrito
-
-        -->
+            -->
+          </div>
+          <div class="total-cart">
+            <p id="cart-units"></p>
+            
+            <p id="cart-total"></p>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -87,37 +103,40 @@
 
     </div>
 
+
     
 
     <script src="./assets/js/main.js"></script>
     <footer class="footer">
-      <div class="our-information footer-container">
-        <h2 class="footer-h2">Our Information</h2>
-        <a href="">Toluca - Mexico </a>
-      </div>
-      <div class="about-us footer-container">
-        <h2 class="footer-h2">About Us</h2>
-        <div class="links">
-          <a href="">Support Center</a>
-          <a href="">Customer Support</a>
-          <a href="">Abour Us</a>
-          <a href="">Copy Right</a>
+      <div class="footer-div">
+        <div class="our-information footer-container">
+          <h2 class="footer-h2">Our Information</h2>
+          <a href="">Toluca - Mexico </a>
         </div>
-      </div >
-      <div class="footer-product footer-container">
-        <h2 class="footer-h2">Product</h2>
-        <div class="links">
-          <a href="">Hoodies</a>
-          <a href="">Shirts</a>
-          <a href="">Sweatshirts</a>
+        <div class="about-us footer-container">
+          <h2 class="footer-h2">About Us</h2>
+          <div class="links">
+            <a href="">Support Center</a>
+            <a href="">Customer Support</a>
+            <a href="">Abour Us</a>
+            <a href="">Copy Right</a>
+          </div>
+        </div >
+        <div class="footer-product footer-container">
+          <h2 class="footer-h2">Product</h2>
+          <div class="links">
+            <a href="">Hoodies</a>
+            <a href="">Shirts</a>
+            <a href="">Sweatshirts</a>
+          </div>
         </div>
-      </div>
-      <div class="social footer-container">
-        <h2 class="footer-h2">Social</h2>
-        <div class="social-container">
-          <i class='bx bxl-facebook bx-sm'></i>
-          <i class='bx bxl-twitter bx-sm'></i>
-          <i class='bx bxl-instagram bx-sm'></i>
+        <div class="social footer-container">
+          <h2 class="footer-h2">Social</h2>
+          <div class="social-container">
+            <i class='bx bxl-facebook bx-sm'></i>
+            <i class='bx bxl-twitter bx-sm'></i>
+            <i class='bx bxl-instagram bx-sm'></i>
+          </div>
         </div>
       </div>
     </footer>

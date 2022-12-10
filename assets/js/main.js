@@ -2,7 +2,7 @@ const items = [
     {
       id: 1,
       name: 'Hoodies',
-      price: 14.00,
+      price: 14,
       image: './assets/images/featured1.png',
       category: 'hoodies',
       quantity: 10
@@ -10,7 +10,7 @@ const items = [
     {
       id: 2,
       name: 'Shirts',
-      price: 24.00,
+      price: 24,
       image: './assets/images/featured2.png',
       category: 'shirts',
       quantity: 15
@@ -18,7 +18,7 @@ const items = [
     {
       id: 3,
       name: 'Sweatshirts',
-      price: 24.00,
+      price: 24,
       image: './assets/images/featured3.png',
       category: 'shirts',
       quantity: 20
@@ -129,6 +129,11 @@ const sectionProductContainer = document.createElement("div")
 sectionProductContainer.classList.add("section-product-container")
 body.appendChild(sectionProductContainer)
 
+const cart = []
+const cartCounter = document.getElementById("cart-counter")
+const cartUnits = document.getElementById("cart-units")
+const cartTotal = document.getElementById("cart-total")
+
 
 function itemProduct (item){
 
@@ -163,6 +168,14 @@ addItem.classList.add("add-item")
 const plus = document.createElement("i")
 plus.classList.add("bx" , "bx-plus")
 
+const productId = item.id
+
+addItem.addEventListener( "click", e => {
+  addProduct(productId)
+  
+})
+
+
 addItem.appendChild(plus)
 productContainerData.appendChild(addItem) 
 productPrice.appendChild(productStock)
@@ -178,6 +191,197 @@ for ( let item of items){
   itemProduct (item)
 }
 
+
+
+function addProduct( itemId ){
+  let productSelected = cart.find(product => product.id === itemId)
+
+
+  if(productSelected){
+    let index = cart.indexOf(productSelected)
+    if(productSelected.quantitySelected < cart[index].quantity){
+    cart[index].quantitySelected++
+    }else{
+      "Has alcanzado el numero maximo de unidades disponibles"
+    }
+  }else{
+    const item = items.find( item => item.id === itemId)
+    item.quantitySelected = 1
+    cart.push(item)
+  }
+
+
+  const cartItemsContainer = document.getElementById("cart-items-container")
+
+  cartItemsContainer.innerHTML = ""
+
+  for ( let item of cart){
+    showProducts(item)
+  }
+  
+  let counter = 0
+  let counterTotal = 0
+  let counterSubTotal
+  for( let item of cart){
+    counterSubTotal = item.quantitySelected*item.price
+    counter += item.quantitySelected  
+    counterTotal += counterSubTotal  
+    cartCounter.textContent = counter  
+    cartUnits.textContent = `Unidades: ${counter}`
+    cartTotal.textContent = `Total: $${counterTotal}.00`
+  }
+  
+}
+
+function showProducts (item){
+
+  const cartItemsContainer = document.getElementById("cart-items-container")
+
+  const cardCart = document.createElement("article")
+  cardCart.classList.add("card-cart")
+
+  const cardCartImgBox =document.createElement("div")
+  cardCartImgBox.classList.add("card-cart-img-box")
+
+  const cardCartImg = document.createElement("img")
+  cardCartImg.classList.add("card-cart-img")
+  cardCartImg.src = item.image
+
+  const cardDetails = document.createElement("div")
+  cardDetails.classList.add("card-details")
+
+  const cardTitle = document.createElement("h3")
+  cardTitle.classList.add("card-title")
+  cardTitle.textContent = item.name
+
+  const cardStock = document.createElement("span")
+  cardStock.classList.add("card-stock")
+  cardStock.textContent = `Stock: ${item.quantity}`
+
+  const cardStockPrice = document.createElement("span")
+  cardStockPrice.classList.add("card-stock-price")
+  cardStockPrice.textContent = `$${item.price}.00 `
+
+  const cardSubtotal = document.createElement("span")
+  cardSubtotal.classList.add("card-subtotal")
+  cardSubtotal.textContent = `Subtotal: $${(item.price*item.quantitySelected)}.00 `
+
+  const cardTotal = document.createElement("div")
+  cardTotal.classList.add("card-total")
+
+  const cardTotalItems = document.createElement("div")
+  cardTotalItems.classList.add("card-total-items")
+
+  const cardTotalUnits = document.createElement("span")
+  cardTotalUnits.classList.add("card-total-units")
+  cardTotalUnits.textContent = ` ${item.quantitySelected} units `
+  const minusUnitBox =document.createElement("div")
+  minusUnitBox.classList.add("unit-box")
+
+  const minusUnit = document.createElement("i")
+  minusUnit.classList.add("bx","bx-minus")
+
+  const plusUnitBox =document.createElement("div")
+  plusUnitBox.classList.add("unit-box")
+
+  const plusUnit = document.createElement("i")
+  plusUnit.classList.add("bx","bx-plus")
+
+  const trashUnit = document.createElement("i")
+  trashUnit.classList.add("bx","bx-trash-alt")
+
+  minusUnitBox.appendChild(minusUnit)
+  plusUnitBox.appendChild(plusUnit)
+  
+  cardTotalItems.appendChild(minusUnitBox)
+  cardTotalItems.appendChild(cardTotalUnits)
+  cardTotalItems.appendChild(plusUnitBox)
+  
+  cardTotal.appendChild(cardTotalItems)
+  cardTotal.appendChild(trashUnit)
+
+  cardStock.appendChild(cardStockPrice)
+
+  cardDetails.appendChild(cardTitle)
+  cardDetails.appendChild(cardStock)
+  cardDetails.appendChild(cardSubtotal)
+  cardDetails.appendChild(cardTotal)
+
+  cardCartImgBox.appendChild(cardCartImg)
+
+  cardCart.appendChild(cardCartImgBox)
+  cardCart.appendChild(cardDetails)
+
+  if(item.quantitySelected > 0){
+  cartItemsContainer.appendChild(cardCart)
+  }
+
+  plusUnit.addEventListener("click", e =>{
+    if(item.quantitySelected < item.quantity){
+    item.quantitySelected++
+    cardTotalUnits.textContent = ` ${item.quantitySelected} units `
+    }else{
+      "Has alcanzado el numero maximo de unidades disponibles"
+    }
+
+    let counter = 0
+    let counterTotal = 0
+    let counterSubTotal
+    for( let item of cart){
+      counterSubTotal = item.quantitySelected*item.price
+      counter += item.quantitySelected  
+      counterTotal += counterSubTotal  
+      cartCounter.textContent = counter  
+      cartUnits.textContent = `Unidades:       ${counter}`
+      cartTotal.textContent = `Total:     $${counterTotal}.00`
+    }
+    cardSubtotal.textContent = `Subtotal: $${(item.price*item.quantitySelected)}.00 `
+    
+  })
+
+  minusUnit.addEventListener("click", e =>{
+    if(item.quantitySelected > 1 ){
+      item.quantitySelected--
+    cardTotalUnits.textContent = ` ${item.quantitySelected} units `
+    }else{
+      item.quantitySelected = 0
+      cartItemsContainer.removeChild(cardCart) 
+    }
+
+    let counter = 0
+    let counterTotal = 0
+    let counterSubTotal
+    for( let item of cart){
+      counterSubTotal = item.quantitySelected*item.price
+      counter += item.quantitySelected  
+      counterTotal += counterSubTotal  
+      cartCounter.textContent = counter  
+      cartUnits.textContent = `Unidades:       ${counter}`
+      cartTotal.textContent = `Total:     $${counterTotal}.00`
+    }
+    cardSubtotal.textContent = `Subtotal: $${(item.price*item.quantitySelected)}.00 `
+  })
+
+  trashUnit.addEventListener("click", e =>{
+    cartItemsContainer.removeChild(cardCart) 
+    item.quantitySelected = 0
+    
+  let counter = 0
+  let counterTotal = 0
+  let counterSubTotal
+  for( let item of cart){
+    counterSubTotal = item.quantitySelected*item.price
+    counter += item.quantitySelected  
+    counterTotal += counterSubTotal  
+    cartCounter.textContent = counter  
+    cartUnits.textContent = `Unidades:       ${counter}`
+    cartTotal.textContent = `Total:     $${counterTotal}.00`
+  }
+  })
+
+  
+
+}
 
 
 
