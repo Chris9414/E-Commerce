@@ -219,18 +219,55 @@ function addProduct( itemId ){
     showProducts(item)
   }
   
-  let counter = 0
-  let counterTotal = 0
-  let counterSubTotal
-  for( let item of cart){
-    counterSubTotal = item.quantitySelected*item.price
-    counter += item.quantitySelected  
-    counterTotal += counterSubTotal  
-    cartCounter.textContent = counter  
-    cartUnits.textContent = `Unidades: ${counter}`
-    cartTotal.textContent = `Total: $${counterTotal}.00`
+  for (let item of cart){
+  cartShoping(cart)
   }
   
+  
+}
+
+  
+
+function cartShoping(cart){
+  const cartItemsContainer = document.getElementById("cart-items-container")
+  const totalCart = document.getElementById("total-cart")
+
+  let counter = 0
+  let counterTotal = 0
+  let counterSubTotal = 0
+
+  
+  function counterFunction (cart){
+    let counterFinal = 0
+    for (let item of cart){
+    counterFinal += item.quantitySelected 
+    }
+    return counterFinal
+    }
+
+    let counterFinal = counterFunction(cart)
+
+    for( let item of cart){
+      counterSubTotal = item.quantitySelected*item.price
+      counter += item.quantitySelected  
+      counterTotal += counterSubTotal 
+      cartCounter.textContent = counter  
+      cartUnits.textContent = `Unidades: ${counter}`
+      cartTotal.textContent = `Total: $${counterTotal}.00`
+    
+      if(counterFinal < 1){
+        cartItemsContainer.innerHTML = 
+        `<div id="cart-items-container">
+        <img src="./assets/images/empty-cart.png" alt="" class="empty-cart">
+        <h2 class="empty-title">Your cart is empty</h2>
+        <p class="empty-p">
+        You can add items to your cart by clicking on the "+" button on the product page.
+        </p> `
+        cartUnits.textContent = ""
+        cartTotal.textContent = ""
+      
+        }
+    }
 }
 
 function showProducts (item){
@@ -324,18 +361,10 @@ function showProducts (item){
       "Has alcanzado el numero maximo de unidades disponibles"
     }
 
-    let counter = 0
-    let counterTotal = 0
-    let counterSubTotal
-    for( let item of cart){
-      counterSubTotal = item.quantitySelected*item.price
-      counter += item.quantitySelected  
-      counterTotal += counterSubTotal  
-      cartCounter.textContent = counter  
-      cartUnits.textContent = `Unidades:       ${counter}`
-      cartTotal.textContent = `Total:     $${counterTotal}.00`
-    }
+    cartShoping(cart)
     cardSubtotal.textContent = `Subtotal: $${(item.price*item.quantitySelected)}.00 `
+    window.localStorage.setItem( "cart", JSON.stringify(cart))
+
     
   })
 
@@ -348,40 +377,31 @@ function showProducts (item){
       cartItemsContainer.removeChild(cardCart) 
     }
 
-    let counter = 0
-    let counterTotal = 0
-    let counterSubTotal
-    for( let item of cart){
-      counterSubTotal = item.quantitySelected*item.price
-      counter += item.quantitySelected  
-      counterTotal += counterSubTotal  
-      cartCounter.textContent = counter  
-      cartUnits.textContent = `Unidades:       ${counter}`
-      cartTotal.textContent = `Total:     $${counterTotal}.00`
-    }
+    cartShoping(cart)
     cardSubtotal.textContent = `Subtotal: $${(item.price*item.quantitySelected)}.00 `
+    window.localStorage.setItem( "cart", JSON.stringify(cart))
+
   })
 
   trashUnit.addEventListener("click", e =>{
     cartItemsContainer.removeChild(cardCart) 
     item.quantitySelected = 0
     
-  let counter = 0
-  let counterTotal = 0
-  let counterSubTotal
-  for( let item of cart){
-    counterSubTotal = item.quantitySelected*item.price
-    counter += item.quantitySelected  
-    counterTotal += counterSubTotal  
-    cartCounter.textContent = counter  
-    cartUnits.textContent = `Unidades:       ${counter}`
-    cartTotal.textContent = `Total:     $${counterTotal}.00`
-  }
+  cartShoping(cart)
+  window.localStorage.setItem( "cart", JSON.stringify(cart))
+
   })
 
-  
-
+  window.localStorage.setItem( "cart", JSON.stringify(cart))
 }
+
+let dataStorage = JSON.parse(window.localStorage.getItem("cart"))
+
+for(let item of dataStorage){
+  showProducts(item)
+}
+
+
 
 
 
