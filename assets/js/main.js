@@ -129,7 +129,7 @@ const sectionProductContainer = document.createElement("div")
 sectionProductContainer.classList.add("section-product-container")
 body.appendChild(sectionProductContainer)
 
-const cart = []
+let cart = []
 const cartCounter = document.getElementById("cart-counter")
 const cartUnits = document.getElementById("cart-units")
 const cartTotal = document.getElementById("cart-total")
@@ -270,9 +270,9 @@ function cartShoping(cart){
     }
 }
 
-function showProducts (item){
+const cartItemsContainer = document.getElementById("cart-items-container")
 
-  const cartItemsContainer = document.getElementById("cart-items-container")
+function showProducts (item){
 
   const cardCart = document.createElement("article")
   cardCart.classList.add("card-cart")
@@ -395,11 +395,32 @@ function showProducts (item){
   window.localStorage.setItem( "cart", JSON.stringify(cart))
 }
 
-let dataStorage = JSON.parse(window.localStorage.getItem("cart"))
+cart = JSON.parse(window.localStorage.getItem("cart"))
 
-for(let item of dataStorage){
-  showProducts(item)
+function counterDataStorage (cart){
+  let finalDataStorage = 0
+  for (let item of cart){
+  finalDataStorage += item.quantitySelected 
+  }
+  return finalDataStorage
 }
+let counterSubTotal = 0
+let counterTotal = 0
+let abcd = counterDataStorage(cart)
+  cartCounter.textContent = abcd
+if(abcd > 0){
+  cartItemsContainer.innerHTML = ""
+for (let item of cart){
+  showProducts(item)
+  counterSubTotal = item.quantitySelected*item.price
+  console.log(counterSubTotal)
+  counterTotal += counterSubTotal
+  console.log(counterTotal)
+  }
+  cartUnits.textContent = `Unidades: ${abcd}`
+  cartTotal.textContent = `Total: $${counterTotal}.00`
+}
+
 
 
 
